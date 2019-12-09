@@ -15,4 +15,10 @@ main()
 		S->run();
 		usleep(100000);
 	}
+
+	delete W;
+	delete C;
+	delete SM;
+	delete B;
+	delete S;
 }

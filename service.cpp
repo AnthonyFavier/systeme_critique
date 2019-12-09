@@ -11,7 +11,7 @@ Service::Service(char spec_mode, Watchdog* spec_wd, Capteur* spec_cp, SMemory* s
 	ME_=spec_sm;
 };
 
-void Service::run(float* compt)
+void Service::run()
 {
 	//1.Ecriture i'm alive
 	WD_->set();
@@ -36,7 +36,7 @@ void Service::run(float* compt)
 float Service::calcul(Circular_Buffer* buf)
 {
 	//moyenne sur les valeurs du buffer
-	float buffer[10]=buf->get();
+	float* buffer=buf->get();
 	for (int i=0;i<10; i++)
 	{
 		res_=res_+buffer[i];

@@ -1,4 +1,5 @@
 #include <fstream>
+#include "../Capteur_Buffer/circular_buffer.h"
 
 using namespace std;
 
@@ -8,6 +9,6 @@ class SMemory
 {
 public:
 	SMemory();
-	int save(float buff[TAILLE_BUFF]);
-	float* recover();
+	int save(Circular_Buffer* buff);
+	Circular_Buffer recover();
 };

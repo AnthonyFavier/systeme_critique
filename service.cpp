@@ -19,6 +19,9 @@ void Service::run(float* compt)
 	//2.Lecture Capteur
 	valeur_capteur_=CP->read();
 
+	//Stocker dans buffer
+	pCBUF_->put(valeur_capteur);
+
 	//3.Calcul des valeur de sortie sur les n dernières valeurs
 	res_=calcul(valeur_capteur, PcBUF);
 
@@ -26,18 +29,18 @@ void Service::run(float* compt)
 	cout<<res_<<endl;
 	
 	//5.Stockage infos capteur sur le disque (memoire stable)
-	pCBUF_->put(valeur_capteur);
+	
 	
 }
 
-float Service::calcul(float val; Circular_Buffer* buf)
+float Service::calcul(Circular_Buffer* buf)
 {
+	//moyenne sur les valeurs du buffer
 	float buffer[10]=buf->get();
 	for (i=0;i<10; i++)
 	{
 		res_=res_+buffer[i]:
 	}
-	res_=res_+val;
 	res_=res_/10;
 
 	return res_;

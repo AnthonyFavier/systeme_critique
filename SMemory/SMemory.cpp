@@ -2,15 +2,18 @@
 
 SMemory::SMemory(){}
 
-int SMemory::save(float buff[TAILLE_BUFF])
+int SMemory::save(Circular_Buffer* buff)
 {
 	ofstream fichier("saved_data");
+
+	float* tab;
 
 	if(fichier.bad()) return 1;
 	else
 	{
+		tab=buff->get();
 		for(int i=0; i<TAILLE_BUFF; i++)
-			fichier << buff[i] << endl;
+			fichier << tab[i] << endl;
 		fichier << endl;
 	}
 
@@ -19,9 +22,8 @@ int SMemory::save(float buff[TAILLE_BUFF])
 	return 0;
 }
 
-float* SMemory::recover()
+Circular_Buffer SMemory::recover()
 {
-	float* val=NULL;
-
-	return val;
+	Circular_Buffer buff;
+	return buff;
 }

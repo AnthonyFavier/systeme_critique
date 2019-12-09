@@ -17,8 +17,8 @@ buffer: Capteur_Buffer/circular_buffer.h Capteur_Buffer/circular_buffer.cpp Capt
 watchdog: Watchdog/watchdog.h Watchdog/watchdog.cpp Watchdog/test_watchdog.cpp
 	$(CC) Watchdog/watchdog.cpp Watchdog/test_watchdog.cpp -o TestsUnitaires/testW
 
-smemory: SMemory/SMemory.h SMemory/SMemory.cpp SMemory/test_SMemory.cpp
-	$(CC) SMemory/SMemory.cpp SMemory/test_SMemory.cpp -o TestsUnitaires/testSM
+smemory: SMemory/SMemory.h SMemory/SMemory.cpp Capteur_Buffer/circular_buffer.cpp Capteur_Buffer/circular_buffer.h SMemory/test_SMemory.cpp
+	$(CC) SMemory/SMemory.cpp SMemory/test_SMemory.cpp Capteur_Buffer/circular_buffer.cpp -o TestsUnitaires/testSM
 
 service: service.h service.cpp testservice.cpp
 	$(CC) service.cpp testservice.cpp -o TestsUnitaires/testS

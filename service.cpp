@@ -3,12 +3,13 @@
 
 using namespace std;
 
-Service::Service(char spec_mode, Watchdog* spec_wd, Capteur* spec_cp, SMemory* spec_sm)
+Service::Service(char spec_mode, Watchdog* spec_wd, Capteur* spec_cp, SMemory* spec_sm, Circular_Buffer* spec_buff)
 {
 	mode_=spec_mode;
 	WD_=spec_wd;
 	CP_=spec_cp;
 	ME_=spec_sm;
+	pCBUF_=spec_buff;
 };
 
 void Service::run()
@@ -26,11 +27,10 @@ void Service::run()
 	res_=calcul(pCBUF_);
 
 	//4.Affichage
-	cout<<"moyenne arithmetique: %f"<<res_<<endl;
+	cout<<"moyenne arithmetique: "<<res_<<endl;
 	
 	//5.Stockage infos capteur sur le disque (memoire stable)
 	ME_->save(pCBUF_);
-	
 }
 
 float Service::calcul(Circular_Buffer* buf)

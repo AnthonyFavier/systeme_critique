@@ -5,8 +5,8 @@
 
 class  Circular_Buffer 
 {
-protected:
-	float buffer_[TAILLE_BUFF];
+private:
+	float buffer_[10];
 	int free_;
 public:
 	Circular_Buffer ();

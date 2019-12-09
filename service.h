@@ -18,7 +18,7 @@ protected:
 
 
 public:
-        Service (char, Watchdog*, Capteur*, SMemory*) ;
+        Service (char, Watchdog*, Capteur*, SMemory*, Circular_Buffer*) ;
         void run () ;
 	float calcul(Circular_Buffer* buf);
 };

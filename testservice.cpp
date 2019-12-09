@@ -1,14 +1,17 @@
 #include "service.h"
 #include <unistd.h>
+#include <iostream>
 
-main()
+using namespace std;
+
+int main()
 {
 	Watchdog* W = new Watchdog();
 	Capteur* C = new Capteur();
 	SMemory* SM = new SMemory();
 	Circular_Buffer* B = new Circular_Buffer();
 
-	Service* S = new Service('P', W, C, SM);
+	Service* S = new Service('P', W, C, SM, B);
 
 	while(true)
 	{
@@ -21,4 +24,6 @@ main()
 	delete SM;
 	delete B;
 	delete S;
+
+	return 0;
 }

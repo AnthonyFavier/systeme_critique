@@ -4,15 +4,18 @@
 #include "Smemory.h"
 #include "Circular_Buffer.h"
 
-class service {
+class Service {
 
 protected:
-        char mode;          // primary / backup
-        int i;
-        watchdog* WD;    // pointeur (reference) sur (adresse du) watchdog
-        capteur* CP;        // pointeur (reference) sur (adresse du) capteur
-        Smemory* ME;    // pointeur (reference) sur (adresse de) memoire stable
-        Circular_Buffer* pCBUF;    // pointeur sur un buffer circulaire
+	float valeur_capteur_;
+	float res_;
+        char mode_;          // primary / backup
+        int i_;
+        watchdog* WD_;    // pointeur (reference) sur (adresse du) watchdog
+        capteur* CP_;        // pointeur (reference) sur (adresse du) capteur
+        Smemory* ME_;    // pointeur (reference) sur (adresse de) memoire stable
+        Circular_Buffer* pCBUF_;    // pointeur sur un buffer circulaire
+
 
 public:
         service (char, watchdog*, capteur*, Smemory*) ;

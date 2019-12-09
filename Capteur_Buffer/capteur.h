@@ -1,12 +1,12 @@
 #ifndef CAPTEUR
 #define CAPTEUR
 
-class capteur {
+class Capteur {
 protected:
 	int nb;
 	float val;
 public:
-	capteur ();
+	Capteur();
 	float read();
 };
 

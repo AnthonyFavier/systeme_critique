@@ -1,8 +1,8 @@
 #include <pthread.h>
-#include "watchdog.h"
-#include "capteur.h"
-#include "Smemory.h"
-#include "circular_buffer.h"
+#include "Watchdog/watchdog.h"
+#include "Capteur_Buffer/capteur.h"
+#include "SMemory/SMemory.h"
+#include "Capteur_Buffer/circular_buffer.h"
 
 class Service {
 
@@ -11,15 +11,16 @@ protected:
 	float res_;
         char mode_;          // primary / backup
         int i_;
-        watchdog* WD_;    // pointeur (reference) sur (adresse du) watchdog
-        capteur* CP_;        // pointeur (reference) sur (adresse du) capteur
-        Smemory* ME_;    // pointeur (reference) sur (adresse de) memoire stable
+        Watchdog* WD_;    // pointeur (reference) sur (adresse du) watchdog
+        Capteur* CP_;        // pointeur (reference) sur (adresse du) capteur
+        SMemory* ME_;    // pointeur (reference) sur (adresse de) memoire stable
         Circular_Buffer* pCBUF_;    // pointeur sur un buffer circulaire
 
 
 public:
-        service (char, watchdog*, capteur*, Smemory*) ;
+        Service (char, Watchdog*, Capteur*, SMemory*) ;
         void run (float*) ;
+	float calcul(Circular_Buffer* buf);
 };
 
 

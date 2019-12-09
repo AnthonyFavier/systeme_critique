@@ -4,7 +4,7 @@ SMemory::SMemory(){}
 
 int SMemory::save(float buff[TAILLE_BUFF])
 {
-	ofstream fichier("data_saved");
+	ofstream fichier("saved_data");
 
 	if(fichier.bad()) return 1;
 	else

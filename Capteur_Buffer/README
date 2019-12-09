@@ -1,0 +1,17 @@
+
+Vous disposez ici du capteur et du buffer circulaire pour le TER.
+- capteur.h
+- capteur.cpp
+- Circular_Buffer.h
+- Circular_Buffer.cpp
+
+et des programmes de test:
+- testcapteur.cpp
+- testBuffer.cpp
+
+La compilation suivie de l'execution ressemble a ceci:
+
+g++ capteur.* testcapteur.cpp -o testC
+./testC
+g++ Circular_Buffer.* testBuffer.cpp -o testB
+./testB

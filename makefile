@@ -14,3 +14,6 @@ buffer: Capteur_Buffer/Circular_Buffer.h Capteur_Buffer/Circular_Buffer.cpp Capt
 
 watchdog: Watchdog/watchdog.h Watchdog/watchdog.cpp Watchdog/test_watchdog.cpp
 	$(CC) Watchdog/watchdog.h Watchdog/watchdog.cpp Watchdog/test_watchdog.cpp -o testW
+
+service: service.h service.cpp
+	$(CC) service.h service.cpp

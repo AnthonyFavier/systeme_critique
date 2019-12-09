@@ -1,11 +1,11 @@
 #ifndef BUFFER
 #define BUFFER
 
-class  Circular_Buffer {
-
+class  Circular_Buffer 
+{
 protected:
-	float Buffer[10];
-	int free;
+	float buffer_[10];
+	int free_;
 public:
 	Circular_Buffer ();
 

@@ -11,18 +11,17 @@
 #include <iostream>
 using namespace std;
 
-#include "Circular_Buffer.h"
+#include "circular_buffer.h"
 
 
-main() {
+main() 
+{
+	Circular_Buffer CBUF;
 
-Circular_Buffer CBUF;
+	int i;
+	for (i=0; i<15; i++) CBUF.put((float) i);
 
-int i;
-for (i=0; i<15; i++) CBUF.put((float) i);
-
-float* T;
-T=CBUF.get();
-for (i=0; i<10; i++) cout << *T++ << endl;
-
+	float* T;
+	T=CBUF.get();
+	for (i=0; i<10; i++) cout << *T++ << endl;
 }

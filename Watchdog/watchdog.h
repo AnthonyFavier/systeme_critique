@@ -10,7 +10,7 @@ public:
 	void set();
 	int read();
 private:
-	int m_compteur;
+	int compteur_;
 };
 
 #endif

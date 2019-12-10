@@ -10,7 +10,7 @@ Service::Service(char spec_mode, Watchdog* spec_wd, Capteur* spec_cp, SMemory* s
 	CP_=spec_cp;
 	ME_=spec_sm;
 	pCBUF_=spec_buff;
-};
+}
 
 void Service::run()
 {

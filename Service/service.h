@@ -1,8 +1,8 @@
 #include <pthread.h>
-#include "Watchdog/watchdog.h"
-#include "Capteur_Buffer/capteur.h"
-#include "SMemory/SMemory.h"
-#include "Capteur_Buffer/circular_buffer.h"
+#include "../Watchdog/watchdog.h"
+#include "../Capteur_Buffer/capteur.h"
+#include "../SMemory/SMemory.h"
+#include "../Capteur_Buffer/circular_buffer.h"
 
 class Service {
 

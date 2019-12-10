@@ -26,15 +26,23 @@ Service* srv2 = new Service('B', W, C, SM, B);
 
 void * processeur1(void *args)
 {
+	int damocles=0;
 	while(true)
 	{
 		srv1->run();
 		usleep(1000000);
+		damocles+=1;
+		if (damocles==12)
+		{
+			cout<<"Even you Brutus..."<<endl;
+			break;
+		}
 	}
 }
 
 void * processeur2(void *args)
 {
+	usleep(500000);
 	while(true)
 	{
         	srv2->run();
@@ -44,7 +52,7 @@ void * processeur2(void *args)
 
 sig_t bye()
 {
-	printf("How have you dared ctrc-c me mortal !\n");
+	printf("How have you dared ctr-c me mortal !\n");
 	exit(0);
 }
 

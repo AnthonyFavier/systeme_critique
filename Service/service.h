@@ -8,6 +8,7 @@ class Service {
 
 protected:
 	float valeur_capteur_;
+	int ancien_watchdog_;
 	float res_;
         char mode_;          // primary / backup
 

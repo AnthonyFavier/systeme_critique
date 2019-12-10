@@ -33,24 +33,27 @@ float Service::calcul(Circular_Buffer* buf)
 {
 	//moyenne sur les valeurs du buffer
 	float* buffer=buf->get();
+	float acc=0;
 	for (int i=0;i<10; i++)
 	{
-		res_=res_+buffer[i];
+		acc=acc+buffer[i];
 	}
-	res_=res_/10;
+	acc=acc/10;
 
-	return res_;
+	return acc;
 }
 
 void Service::runPrimary()
-{
+{	
 	//////////////////////////BEFORE////////////////////////
-
 	//1.Ecriture i'm alive
 	WD_->set();
 	le_mutex_->unlock();
-	
+
 	//////////////////////////PROCEED//////////////////////
+	float v;
+	bool probleme=false;
+
 	//2.Lecture Capteur
 	valeur_capteur_=CP_->read();
 	cout<<"valeur capteur: "<<valeur_capteur_<<endl;
@@ -60,14 +63,27 @@ void Service::runPrimary()
 	pCBUF_->print();
 
 	//3.Calcul des valeur de sortie sur les n dernières valeurs
-	res_=calcul(pCBUF_);
+	float v1=calcul(pCBUF_);
+	float v2=calcul(pCBUF_);
 
-	//4.Affichage
-	cout<<"moyenne arithmetique: "<<res_<<endl;
-	
 	////////////////////////////AFTER////////////////////////
+	if(v1==v2)
+		v=v1;
+	else
+	{
+		// Vote majoritaire
+		float v3=calcul(pCBUF_);
+		if(v3==v1 || v3==v2)
+			v=v3;
+		else
+			probleme=true;
+	}
+
+	if(!probleme)
+		cout<<"moyenne arithmetique: "<<v<<endl;
+
 	//5.Stockage infos capteur sur le disque (memoire stable)
-	ME_->save(pCBUF_);
+	ME_->save(pCBUF_); 
 }
 
 void Service::runBackup()

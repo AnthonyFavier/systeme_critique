@@ -14,7 +14,6 @@ protected:
 	mutex* le_mutex_;
 	float valeur_capteur_;
 	int ancien_watchdog_;
-	float res_;
         char mode_;          // primary / backup
 
         Watchdog* WD_;    // pointeur (reference) sur (adresse du) watchdog

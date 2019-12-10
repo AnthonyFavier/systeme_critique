@@ -4,6 +4,7 @@
 #include <stdio.h>
 #include <signal.h>
 #include <pthread.h>
+#include <mutex>
 #include <stdlib.h>
 #include <strings.h>
 #include <unistd.h>
@@ -16,13 +17,14 @@ using namespace std;
 
 int tid_FD, tid_IM;
 
+std::mutex* M=new std::mutex();
 Watchdog* W = new Watchdog();
 Capteur* C = new Capteur();
 SMemory* SM = new SMemory();
 Circular_Buffer* B = new Circular_Buffer();
 
-Service* srv1 = new Service('P', W, C, SM, B);
-Service* srv2 = new Service('B', W, C, SM, B);
+Service* srv1 = new Service('P', W, C, SM, B, M);
+Service* srv2 = new Service('B', W, C, SM, B, M);
 
 void * processeur1(void *args)
 {

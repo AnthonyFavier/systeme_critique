@@ -3,14 +3,16 @@
 
 using namespace std;
 
-Service::Service(char spec_mode, Watchdog* spec_wd, Capteur* spec_cp, SMemory* spec_sm, Circular_Buffer* spec_buff)
+Service::Service(char spec_mode, Watchdog* spec_wd, Capteur* spec_cp, SMemory* spec_sm, Circular_Buffer* spec_buff, mutex* spec_mutex)
 {
+	le_mutex_=spec_mutex;
 	mode_=spec_mode;
 	WD_=spec_wd;
 	CP_=spec_cp;
 	ME_=spec_sm;
 	pCBUF_=spec_buff;
-
+	
+	timeout_=0;
 	ancien_watchdog_=-1;
 }
 
@@ -46,6 +48,7 @@ void Service::runPrimary()
 
 	//1.Ecriture i'm alive
 	WD_->set();
+	le_mutex_->unlock();
 	
 	//////////////////////////PROCEED//////////////////////
 	//2.Lecture Capteur
@@ -71,17 +74,24 @@ void Service::runBackup()
 {
 
 	//1.Lecture watchdog
-	int valeur_watchdog=WD_->read();
-	cout<<"lecture watchdog : "<<valeur_watchdog<<endl;
+	timeout_+=1;
 
-	//2.Si primary dead, alors
-	if (valeur_watchdog==ancien_watchdog_)
+	if (le_mutex_->try_lock()||(timeout_==2))
 	{
-		cout << "Recouvrement" << endl;
-		delete pCBUF_;
-		pCBUF_=ME_->recover();
-		mode_='P';
-	}
+		int valeur_watchdog=WD_->read();
+		cout<<"lecture watchdog : "<<valeur_watchdog<<endl;
 
-	ancien_watchdog_=valeur_watchdog;
+		//2.Si primary dead, alors
+		if (valeur_watchdog==ancien_watchdog_)
+		{
+			cout << "Recouvrement" << endl;
+			delete pCBUF_;
+			pCBUF_=ME_->recover();
+			mode_='P';
+		}
+
+		ancien_watchdog_=valeur_watchdog;
+		timeout_=0;
+	}
+	
 }

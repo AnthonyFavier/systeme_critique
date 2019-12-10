@@ -27,6 +27,7 @@ int main()
 		buff->put(f);
 		f+=1.5;
 	}
+	buff->put(3.43);
 	if(smemory.save(buff)==-1)
 		cout << "DEUXIEME PROBLEMMMEE" << endl;
 
@@ -34,7 +35,10 @@ int main()
 	Circular_Buffer* buff2;
 	buff2=smemory.recover();
 	buff2->print();
-
+	cout << "free=" << buff2->getFree() << endl;
+	buff2->put(4.124); 
+	buff2->print();
+	cout << "free=" << buff2->getFree() << endl;
 
 	delete buff;
 	delete buff2;

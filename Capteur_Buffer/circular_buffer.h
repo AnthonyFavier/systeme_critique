@@ -11,8 +11,10 @@ private:
 public:
 	Circular_Buffer ();
 
-	void put (float);
-	float* get ();
+	void put(float);
+	float* get();
+	int getFree();
+	void setFree(int free);
 	void print();
 };
 

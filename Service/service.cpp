@@ -14,23 +14,15 @@ Service::Service(char spec_mode, Watchdog* spec_wd, Capteur* spec_cp, SMemory* s
 
 void Service::run()
 {
-	//1.Ecriture i'm alive
-	WD_->set();
-	
-	//2.Lecture Capteur
-	valeur_capteur_=CP_->read();
-
-	//Stocker dans buffer
-	pCBUF_->put(valeur_capteur_);
-
-	//3.Calcul des valeur de sortie sur les n dernières valeurs
-	res_=calcul(pCBUF_);
-
-	//4.Affichage
-	cout<<"moyenne arithmetique: "<<res_<<endl;
-	
-	//5.Stockage infos capteur sur le disque (memoire stable)
-	ME_->save(pCBUF_);
+	switch(mode_)
+	{
+		case 'P':
+			runPrimary();
+			break;
+		case 'B':
+			runBackup();
+			break;
+	}
 }
 
 float Service::calcul(Circular_Buffer* buf)
@@ -44,4 +36,41 @@ float Service::calcul(Circular_Buffer* buf)
 	res_=res_/10;
 
 	return res_;
+}
+
+void Service::runPrimary()
+{
+	//////////////////////////BEFORE////////////////////////
+
+	//1.Ecriture i'm alive
+	WD_->set();
+	
+	//////////////////////////PROCEED//////////////////////
+	//2.Lecture Capteur
+	valeur_capteur_=CP_->read();
+	cout<<"valeur capteur: "<<valeur_capteur_<<endl;
+
+	//Stocker dans buffer
+	pCBUF_->put(valeur_capteur_);
+	pCBUF_->print();
+
+	//3.Calcul des valeur de sortie sur les n dernières valeurs
+	res_=calcul(pCBUF_);
+
+	//4.Affichage
+	cout<<"moyenne arithmetique: "<<res_<<endl;
+	
+	////////////////////////////AFTER////////////////////////
+	//5.Stockage infos capteur sur le disque (memoire stable)
+	ME_->save(pCBUF_);
+}
+
+void Service::runBackup()
+{
+
+	//1.Lecture watchdog
+	cout<<"lecture watchdog : "<<WD_->read()<<endl;
+
+	//2.Si primary dead, alors
+	
 }

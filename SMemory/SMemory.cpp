@@ -1,14 +1,17 @@
 #include "SMemory.h"
 
-SMemory::SMemory(){}
+SMemory::SMemory()
+{
+	filename="saved_data";
+}
 
 int SMemory::save(Circular_Buffer* buff)
 {
-	ofstream fichier("saved_data");
+	ofstream fichier(filename);
 
 	float* tab;
 
-	if(fichier.bad()) return 1;
+	if(fichier.bad()) return -1;
 	else
 	{
 		tab=buff->get();
@@ -22,8 +25,25 @@ int SMemory::save(Circular_Buffer* buff)
 	return 0;
 }
 
-Circular_Buffer SMemory::recover()
+Circular_Buffer* SMemory::recover()
 {
-	Circular_Buffer buff;
+	ifstream fichier(filename);
+
+	Circular_Buffer* buff=new Circular_Buffer();
+
+	if(fichier)
+	{
+		string line;
+		float f;
+		for(int i=0; i<10; i++)
+		{
+			getline(fichier, line);
+			f=atof(line.c_str());
+			buff->put(f);
+		}
+	}
+	else
+		cout << "ERREUR:Impossible lire memoire stable!" << endl;
+
 	return buff;
 }

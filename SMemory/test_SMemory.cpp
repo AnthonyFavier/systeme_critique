@@ -31,7 +31,7 @@ int main()
 		cout << "DEUXIEME PROBLEMMMEE" << endl;
 
 	cout << "recover" << endl;
-	Circular_Buffer* buff2=new Circular_Buffer();
+	Circular_Buffer* buff2;
 	buff2=smemory.recover();
 	buff2->print();
 

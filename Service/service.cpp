@@ -157,3 +157,8 @@ int Service::getDelay()
 	else
 		return delay_/10;
 }
+
+char Service::getMode()
+{
+	return mode_;
+}

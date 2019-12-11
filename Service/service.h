@@ -37,6 +37,7 @@ public:
 	void runBackup();
 	int saveRes(float v);
 	int getDelay();
+	char getMode();
 };
 
 

@@ -1,11 +1,15 @@
+#include <iostream>
 #include <pthread.h>
 #include <mutex>
+#include <signal.h>
 #include "../Watchdog/watchdog.h"
 #include "../Capteur_Buffer/capteur.h"
 #include "../SMemory/SMemory.h"
 #include "../Capteur_Buffer/circular_buffer.h"
 
 using namespace std;
+
+sig_t test();
 
 class Service {
 

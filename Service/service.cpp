@@ -1,4 +1,3 @@
-#include <iostream>
 #include "service.h"
 
 using namespace std;
@@ -21,6 +20,13 @@ Service::Service(char spec_mode, Watchdog* spec_wd, Capteur* spec_cp, SMemory* s
         fichier.close();
 
 	delay_=1000000;
+
+	signal(SIGUSR1, (sig_t)test);
+}
+
+sig_t test()
+{
+	cout << "salut" << endl;
 }
 
 void Service::run()

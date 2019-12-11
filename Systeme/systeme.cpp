@@ -32,7 +32,7 @@ void * processeur1(void *args)
 	while(true)
 	{
 		srv1->run();
-		usleep(1000000);
+		usleep(srv1->getDelay());
 		damocles+=1;
 		if (damocles==5)
 		{
@@ -44,11 +44,10 @@ void * processeur1(void *args)
 
 void * processeur2(void *args)
 {
-	usleep(50000);
 	while(true)
 	{
         	srv2->run();
-		usleep(100000);
+		usleep(srv2->getDelay());
 	}
 }
 

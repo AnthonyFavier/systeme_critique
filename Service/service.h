@@ -17,6 +17,7 @@ protected:
         char mode_;          // primary / backup
 	int id_;
 	string filename_;
+	int delay_;
 
         Watchdog* WD_;    // pointeur (reference) sur (adresse du) watchdog
         Capteur* CP_;        // pointeur (reference) sur (adresse du) capteur
@@ -31,6 +32,7 @@ public:
 	void runPrimary();
 	void runBackup();
 	int saveRes(float v);
+	int getDelay();
 };
 
 

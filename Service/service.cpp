@@ -19,6 +19,8 @@ Service::Service(char spec_mode, Watchdog* spec_wd, Capteur* spec_cp, SMemory* s
 
 	ofstream fichier(filename_);
         fichier.close();
+
+	delay_=1000000;
 }
 
 void Service::run()
@@ -107,7 +109,7 @@ void Service::runBackup()
 {
 	timeout_++;
 
-	if (le_mutex_->try_lock()||(timeout_==13))
+	if (le_mutex_->try_lock()||(timeout_==11))
 	{
 		//1.Lecture watchdog
 		int valeur_watchdog=WD_->read();
@@ -140,4 +142,12 @@ int Service::saveRes(float v)
 
         fichier.close();
 	return 0;
+}
+
+int Service::getDelay()
+{
+	if(mode_=='P')
+		return delay_;
+	else
+		return delay_/10;
 }

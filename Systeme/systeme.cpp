@@ -15,8 +15,6 @@ using namespace std;
 
 /* Definition de la procedure de traitement de requete  */
 
-int tid_FD, tid_IM;
-
 std::mutex* M=new std::mutex();
 Watchdog* W = new Watchdog();
 Capteur* C = new Capteur();
@@ -26,6 +24,9 @@ Circular_Buffer* B = new Circular_Buffer();
 Service* srv1 = new Service('P', W, C, SM, B, M, 0);
 Service* srv2 = new Service('B', W, C, SM, B, M, 1);
 
+pthread_attr_t *thread_attributes1;
+pthread_t *thread1;
+
 void * processeur1(void *args)
 {
 	int damocles=0;
@@ -34,7 +35,7 @@ void * processeur1(void *args)
 		srv1->run();
 		usleep(srv1->getDelay());
 		damocles+=1;
-		if (damocles==5)
+		if (damocles==-1)
 		{
 			cout<<"Even you Brutus..."<<endl;
 			break;
@@ -51,6 +52,12 @@ void * processeur2(void *args)
 	}
 }
 
+void * fault_injection(void *args)
+{
+	usleep(4000000);
+	pthread_cancel(*thread1);
+}
+
 sig_t bye()
 {
 	printf("\n######################################################\n######################################################\n####### How have you dared ctr-c me mortal ?! ########\n######################################################\n######################################################\n\n");
@@ -58,31 +65,35 @@ sig_t bye()
 }
 
 ////////////////////////////////////////////////////////////////////
-void main()
+main()
 {
 	pthread_attr_t *thread_attributes;
 	pthread_t *thread;
 
 	signal(SIGINT, (sig_t)bye);
 
+	// creation du thread Primary //
+	thread_attributes1=(pthread_attr_t *)malloc(sizeof(pthread_attr_t));
+	thread1=(pthread_t *)malloc(sizeof(pthread_t));
+	pthread_attr_init(thread_attributes1);
+	if (pthread_create(thread1, thread_attributes1, processeur1,(void *) NULL) != 0)
+		perror ("Thread_Server-> Thread1 pb!");
 
-	/* creation du thread Server 1 */
-	tid_FD = 1;
-	thread_attributes=(pthread_attr_t *)malloc(sizeof(pthread_attr_t));
-	thread=(pthread_t *)malloc(sizeof(pthread_t));
-	pthread_attr_init(thread_attributes);
-	if (pthread_create(thread, thread_attributes, processeur1,(void *) NULL) != 0)
-		perror ("Thread_Server-> Failure detector thread pb!");
-
-	/* creation du thread Server 2 */
-	tid_IM=2;
+	// creation du thread Backup //
 	thread_attributes=(pthread_attr_t *)malloc(sizeof(pthread_attr_t));
 	thread=(pthread_t *)malloc(sizeof(pthread_t));
 	pthread_attr_init(thread_attributes);
 	if (pthread_create(thread, thread_attributes, processeur2,(void *) NULL) != 0)
-		perror ("Thread_Server-> Image mgt thread pb!");
+		perror ("Thread_Server-> Thread2 pb!");
 
-	while (1) { }  /* DOES NOTHING */ ;
+	// creation du thread Fault injection //
+	thread_attributes=(pthread_attr_t *)malloc(sizeof(pthread_attr_t));
+	thread=(pthread_t *)malloc(sizeof(pthread_t));
+	pthread_attr_init(thread_attributes);
+	if (pthread_create(thread, thread_attributes, fault_injection,(void *) NULL) != 0)
+		perror ("Thread_Server-> Thread FI pb!");
+
+	while (1) { } ;
 } 
 ///////////////////////////////////////////////////////////////////
 

@@ -59,6 +59,15 @@ void * fault_injection(void *args)
 	//pthread_kill(*thread1, SIGUSR1);
 }
 
+// autre thread check watchdog
+// while(1)
+// if(sv1->getMode()=='P' && srv2->getMode()=='B')
+// 	// check watchdog
+// 	// *contenu de runBackup*
+// 	// si pas bon
+// 		// srv->recouvrement();
+// usleep(srv2->getDelay())
+
 sig_t bye()
 {
 	printf("\n######################################################\n######################################################\n####### How have you dared ctr-c me mortal ?! ########\n######################################################\n######################################################\n\n");

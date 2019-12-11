@@ -15,7 +15,7 @@ Service::Service(char spec_mode, Watchdog* spec_wd, Capteur* spec_cp, SMemory* s
 	timeout_=0;
 	ancien_watchdog_=-1;
 	id_=id;
-	filename_="resultats";
+	filename_="Runs/resultats.txt";
 
 	ofstream fichier(filename_);
         fichier.close();

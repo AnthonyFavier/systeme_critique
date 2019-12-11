@@ -2,7 +2,7 @@
 
 SMemory::SMemory()
 {
-	filename="saved_data";
+	filename="stable_memory.mem";
 }
 
 int SMemory::save(Circular_Buffer* buff)

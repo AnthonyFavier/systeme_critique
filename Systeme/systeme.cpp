@@ -54,7 +54,7 @@ void * processeur2(void *args)
 
 void * fault_injection(void *args)
 {
-	usleep(4000000);
+	usleep(6000000);
 	pthread_cancel(*thread1);
 }
 

@@ -14,6 +14,11 @@ Service::Service(char spec_mode, Watchdog* spec_wd, Capteur* spec_cp, SMemory* s
 	
 	timeout_=0;
 	ancien_watchdog_=-1;
+	filename_="resultats";
+
+	ofstream fichier(filename_);
+        fichier.close();
+
 }
 
 void Service::run()
@@ -82,6 +87,7 @@ void Service::runPrimary()
 
 	if(!probleme)
 		cout<<"moyenne arithmetique: "<<v<<endl;
+		saveRes(v);
 
 	//5.Stockage infos capteur sur le disque (memoire stable)
 	ME_->save(pCBUF_); 
@@ -110,4 +116,18 @@ void Service::runBackup()
 		timeout_=0;
 	}
 	
+}
+
+int Service::saveRes(float v)
+{
+	ofstream fichier(filename_, ios::app);
+
+        if(fichier.bad()) return -1;
+        else
+        {
+                fichier << v << endl;
+        }
+
+        fichier.close();
+	return 0;
 }

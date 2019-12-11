@@ -3,7 +3,7 @@
 
 using namespace std;
 
-Service::Service(char spec_mode, Watchdog* spec_wd, Capteur* spec_cp, SMemory* spec_sm, Circular_Buffer* spec_buff, mutex* spec_mutex)
+Service::Service(char spec_mode, Watchdog* spec_wd, Capteur* spec_cp, SMemory* spec_sm, Circular_Buffer* spec_buff, mutex* spec_mutex, int id)
 {
 	le_mutex_=spec_mutex;
 	mode_=spec_mode;
@@ -14,6 +14,7 @@ Service::Service(char spec_mode, Watchdog* spec_wd, Capteur* spec_cp, SMemory* s
 	
 	timeout_=0;
 	ancien_watchdog_=-1;
+	id_=id;
 }
 
 void Service::run()
@@ -50,6 +51,7 @@ void Service::runPrimary()
 	WD_->set();
 	le_mutex_->unlock();
 
+
 	//////////////////////////PROCEED//////////////////////
 	float v;
 	bool probleme=false;
@@ -66,6 +68,7 @@ void Service::runPrimary()
 	float v1=calcul(pCBUF_);
 	float v2=calcul(pCBUF_);
 
+
 	////////////////////////////AFTER////////////////////////
 	if(v1==v2)
 		v=v1;
@@ -81,10 +84,18 @@ void Service::runPrimary()
 	}
 
 	if(!probleme)
-		cout<<"moyenne arithmetique: "<<v<<endl;
+	{
+		cout << "=>";
+		if(id_==0)
+			cout << "Simplex";
+		else
+			cout << "Duplex";
+		cout<<"-moyenne arithmetique: "<<v<<endl;
+	}
 
 	//5.Stockage infos capteur sur le disque (memoire stable)
-	ME_->save(pCBUF_); 
+	if(ME_->save(pCBUF_)==-1) 
+		cout << "Probleme de sauvegarde !" << endl;
 }
 
 void Service::runBackup()

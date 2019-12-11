@@ -15,6 +15,7 @@ protected:
 	float valeur_capteur_;
 	int ancien_watchdog_;
         char mode_;          // primary / backup
+	int id_;
 
         Watchdog* WD_;    // pointeur (reference) sur (adresse du) watchdog
         Capteur* CP_;        // pointeur (reference) sur (adresse du) capteur
@@ -23,7 +24,7 @@ protected:
 
 
 public:
-        Service (char, Watchdog*, Capteur*, SMemory*, Circular_Buffer*, mutex*) ;
+        Service (char, Watchdog*, Capteur*, SMemory*, Circular_Buffer*, mutex*, int=0) ;
         void run () ;
 	float calcul(Circular_Buffer* buf);
 	void runPrimary();

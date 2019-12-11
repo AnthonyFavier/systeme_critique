@@ -23,8 +23,8 @@ Capteur* C = new Capteur();
 SMemory* SM = new SMemory();
 Circular_Buffer* B = new Circular_Buffer();
 
-Service* srv1 = new Service('P', W, C, SM, B, M);
-Service* srv2 = new Service('B', W, C, SM, B, M);
+Service* srv1 = new Service('P', W, C, SM, B, M, 0);
+Service* srv2 = new Service('B', W, C, SM, B, M, 1);
 
 void * processeur1(void *args)
 {
@@ -34,7 +34,7 @@ void * processeur1(void *args)
 		srv1->run();
 		usleep(1000000);
 		damocles+=1;
-		if (damocles==70)
+		if (damocles==3)
 		{
 			cout<<"Even you Brutus..."<<endl;
 			break;

@@ -73,6 +73,7 @@ void Service::runPrimary()
 	{
 		// Vote majoritaire
 		float v3=calcul(pCBUF_);
+		cout << "v3=" << v3 << endl;
 		if(v3==v1 || v3==v2)
 			v=v3;
 		else
@@ -88,12 +89,11 @@ void Service::runPrimary()
 
 void Service::runBackup()
 {
-
-	//1.Lecture watchdog
 	timeout_+=1;
 
 	if (le_mutex_->try_lock()||(timeout_==2))
 	{
+		//1.Lecture watchdog
 		int valeur_watchdog=WD_->read();
 		cout<<"lecture watchdog : "<<valeur_watchdog<<endl;
 

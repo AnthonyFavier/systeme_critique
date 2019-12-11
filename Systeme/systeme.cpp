@@ -34,7 +34,7 @@ void * processeur1(void *args)
 		srv1->run();
 		usleep(1000000);
 		damocles+=1;
-		if (damocles==12)
+		if (damocles==70)
 		{
 			cout<<"Even you Brutus..."<<endl;
 			break;

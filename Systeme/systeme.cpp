@@ -58,34 +58,31 @@ sig_t bye()
 }
 
 ////////////////////////////////////////////////////////////////////
-main()
+void main()
 {
+	pthread_attr_t *thread_attributes;
+	pthread_t *thread;
 
-pthread_attr_t *thread_attributes;
-pthread_t *thread;
-
-signal(SIGINT, (sig_t)bye);
+	signal(SIGINT, (sig_t)bye);
 
 
-/* creation du thread Server1 */
-tid_FD = 1;
+	/* creation du thread Server 1 */
+	tid_FD = 1;
+	thread_attributes=(pthread_attr_t *)malloc(sizeof(pthread_attr_t));
+	thread=(pthread_t *)malloc(sizeof(pthread_t));
+	pthread_attr_init(thread_attributes);
+	if (pthread_create(thread, thread_attributes, processeur1,(void *) NULL) != 0)
+		perror ("Thread_Server-> Failure detector thread pb!");
 
-thread_attributes=(pthread_attr_t *)malloc(sizeof(pthread_attr_t));
-thread=(pthread_t *)malloc(sizeof(pthread_t));
+	/* creation du thread Server 2 */
+	tid_IM=2;
+	thread_attributes=(pthread_attr_t *)malloc(sizeof(pthread_attr_t));
+	thread=(pthread_t *)malloc(sizeof(pthread_t));
+	pthread_attr_init(thread_attributes);
+	if (pthread_create(thread, thread_attributes, processeur2,(void *) NULL) != 0)
+		perror ("Thread_Server-> Image mgt thread pb!");
 
-pthread_attr_init(thread_attributes);
-if (pthread_create(thread, thread_attributes, processeur1,(void *) NULL) != 0)
-        perror ("Thread_Server-> Failure detector thread pb!");
-
-/* creation du thread Server 2 */
-tid_IM=2;
-thread_attributes=(pthread_attr_t *)malloc(sizeof(pthread_attr_t));
-thread=(pthread_t *)malloc(sizeof(pthread_t));
-pthread_attr_init(thread_attributes);
-if (pthread_create(thread, thread_attributes, processeur2,(void *) NULL) != 0)
-        perror ("Thread_Server-> Image mgt thread pb!");
-
-while (1) { }  /* DOES NOTHING */ ;
+	while (1) { }  /* DOES NOTHING */ ;
 } 
 ///////////////////////////////////////////////////////////////////
 

@@ -15,6 +15,10 @@ Service::Service(char spec_mode, Watchdog* spec_wd, Capteur* spec_cp, SMemory* s
 	timeout_=0;
 	ancien_watchdog_=-1;
 	id_=id;
+	filename_="resultats";
+
+	ofstream fichier(filename_);
+        fichier.close();
 }
 
 void Service::run()
@@ -58,7 +62,7 @@ void Service::runPrimary()
 
 	//2.Lecture Capteur
 	valeur_capteur_=CP_->read();
-	cout<<"valeur capteur: "<<valeur_capteur_<<endl;
+	cout<<endl<<"valeur capteur: "<<valeur_capteur_<<endl;
 
 	//Stocker dans buffer
 	pCBUF_->put(valeur_capteur_);
@@ -91,6 +95,7 @@ void Service::runPrimary()
 		else
 			cout << "Duplex";
 		cout<<"-moyenne arithmetique: "<<v<<endl;
+		saveRes(v);
 	}
 
 	//5.Stockage infos capteur sur le disque (memoire stable)
@@ -100,9 +105,9 @@ void Service::runPrimary()
 
 void Service::runBackup()
 {
-	timeout_+=1;
+	timeout_++;
 
-	if (le_mutex_->try_lock()||(timeout_==2))
+	if (le_mutex_->try_lock()||(timeout_==13))
 	{
 		//1.Lecture watchdog
 		int valeur_watchdog=WD_->read();
@@ -121,4 +126,18 @@ void Service::runBackup()
 		timeout_=0;
 	}
 	
+}
+
+int Service::saveRes(float v)
+{
+	ofstream fichier(filename_, ios::app);
+
+        if(fichier.bad()) return -1;
+        else
+        {
+                fichier << v << endl;
+        }
+
+        fichier.close();
+	return 0;
 }

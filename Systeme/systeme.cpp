@@ -34,7 +34,7 @@ void * processeur1(void *args)
 		srv1->run();
 		usleep(1000000);
 		damocles+=1;
-		if (damocles==3)
+		if (damocles==5)
 		{
 			cout<<"Even you Brutus..."<<endl;
 			break;
@@ -44,11 +44,11 @@ void * processeur1(void *args)
 
 void * processeur2(void *args)
 {
-	usleep(500000);
+	usleep(50000);
 	while(true)
 	{
         	srv2->run();
-		usleep(1000000);
+		usleep(100000);
 	}
 }
 

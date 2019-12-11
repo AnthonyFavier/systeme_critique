@@ -16,6 +16,7 @@ protected:
 	int ancien_watchdog_;
         char mode_;          // primary / backup
 	int id_;
+	string filename_;
 
         Watchdog* WD_;    // pointeur (reference) sur (adresse du) watchdog
         Capteur* CP_;        // pointeur (reference) sur (adresse du) capteur
@@ -29,6 +30,7 @@ public:
 	float calcul(Circular_Buffer* buf);
 	void runPrimary();
 	void runBackup();
+	int saveRes(float v);
 };
 
 

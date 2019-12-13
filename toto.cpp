@@ -12,6 +12,10 @@ int main(int argc, char** argv)
 	string line="erreur";
 	for(int i=0; i<n; i++)
 	{
+		cout << endl << "######################################" << endl;
+		cout << "RUN=" << i << "/" << n << endl;
+		cout << "######################################" << endl << endl;
+
 		// Lance le systeme
 		cmd="./systeme ";
 		cmd.append(to_string(i));

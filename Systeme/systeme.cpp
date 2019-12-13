@@ -16,6 +16,7 @@ using namespace std;
 /* Definition de la procedure de traitement de requete  */
 
 
+int damocles=1;
 
 pthread_attr_t *thread_attributes1;
 pthread_t *thread1;
@@ -43,7 +44,7 @@ void * processeur2(void* args)
 
 void * fault_injection(void *args)
 {
-	usleep(6000000);
+	usleep(damocles*1000000);
 	pthread_cancel(*thread1);
 	
 	//pthread_kill(*thread1, SIGUSR1); // Si check exterieur
@@ -73,6 +74,12 @@ main(int argc, char** argv)
 	pid_t pid=getpid();
 	fichier << pid;
 	fichier.close();
+
+	// injection fault
+	srand(time(NULL));
+	damocles=rand()%18+1;
+	cout << "damo=" << damocles << endl;
+	
 
 	mutex* M=new mutex();
 	Watchdog* W = new Watchdog();

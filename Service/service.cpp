@@ -99,9 +99,9 @@ void Service::runPrimary()
 	{
 		cout << "=>";
 		if(id_==0)
-			cout << "Simplex";
-		else
 			cout << "Duplex";
+		else
+			cout << "Simplex";
 		cout<<"-moyenne arithmetique: "<<v<<endl;
 		saveRes(v);
 	}

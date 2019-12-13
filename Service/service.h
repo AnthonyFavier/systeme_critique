@@ -19,7 +19,7 @@ protected:
 	float valeur_capteur_;
 	int ancien_watchdog_;
         char mode_;          // primary / backup
-	int id_;
+	int initial_mode_;
 	string filename_;
 	int delay_;
 

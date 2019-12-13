@@ -2,7 +2,7 @@
 
 using namespace std;
 
-Service::Service(char spec_mode, Watchdog* spec_wd, Capteur* spec_cp, SMemory* spec_sm, Circular_Buffer* spec_buff, mutex* spec_mutex, int id)
+Service::Service(char spec_mode, Watchdog* spec_wd, Capteur* spec_cp, SMemory* spec_sm, Circular_Buffer* spec_buff, mutex* spec_mutex, int initial_mode)
 {
 	le_mutex_=spec_mutex;
 	mode_=spec_mode;
@@ -13,13 +13,13 @@ Service::Service(char spec_mode, Watchdog* spec_wd, Capteur* spec_cp, SMemory* s
 	
 	timeout_=0;
 	ancien_watchdog_=-1;
-	id_=id;
+	initial_mode_=initial_mode;
 	filename_="Runs/resultats.txt";
 
 	ofstream fichier(filename_);
         fichier.close();
 
-	delay_=1000000;
+	delay_=500000; // µs
 
 	signal(SIGUSR1, (sig_t)test);
 }
@@ -98,7 +98,7 @@ void Service::runPrimary()
 	if(!probleme)
 	{
 		cout << "=>";
-		if(id_==0)
+		if(initial_mode_==0)
 			cout << "Duplex";
 		else
 			cout << "Simplex";

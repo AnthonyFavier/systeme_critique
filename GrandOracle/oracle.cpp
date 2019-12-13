@@ -12,12 +12,14 @@ int main()
 	string bm_filename="Runs/benchmark.txt";
         ofstream bm_fichier(bm_filename);	
 
-
+	int succes=0;
 
 
 	for (int i=0; i<100; i++)
 	{
-		cout<<"checking run "<<i<<endl;
+		ifstream gr_fichier(gr_filename);
+
+		cout<<"[check run "<<i<<"]"<<endl;
 		string extension=to_string(i);
 		string filename="Runs/resultatsid"+extension+".txt";
         	ifstream fichier(filename);
@@ -34,15 +36,17 @@ int main()
 				getline(fichier, line);
 				getline(gr_fichier, line_gr);
 
-				cout<<line<<" vs. "<<line_gr<<endl;
-
 				if (!(line==line_gr))
 				{
 					etat=false;
 				}
 			}
 
-			if (etat) {bm_fichier<<i<<" : c'est OK"<<endl;}
+			if (etat) 
+			{
+				bm_fichier<<i<<" : c'est OK"<<endl;
+				succes++;
+			}
 			else {bm_fichier<<i<<" : PAS OK OSCOOOUR"<<endl;}
 		}
 		else
@@ -50,8 +54,11 @@ int main()
 			cout<<"Pas sur qu'il existe le run, recommence"<<endl;
 		}
 
-
+		gr_fichier.close();
 	}
+	float couverture=succes/100.0;
+	cout<<"couverture : on a eu "<<succes<<" succes sur 100 run, soit un taux de c="<<couverture<<endl;
+	cout<<"IMPRESSIONNANT !"<<endl;
 
         return 1;
 }

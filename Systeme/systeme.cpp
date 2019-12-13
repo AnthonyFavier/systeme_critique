@@ -29,17 +29,10 @@ pthread_t *thread1;
 
 void * processeur1(void *args)
 {
-	int damocles=0;
 	while(true)
 	{
 		srv1->run();
 		usleep(srv1->getDelay());
-		damocles+=1;
-		if (damocles==-1)
-		{
-			cout<<"Even you Brutus..."<<endl;
-			break;
-		}
 	}
 }
 
@@ -55,8 +48,10 @@ void * processeur2(void *args)
 void * fault_injection(void *args)
 {
 	usleep(6000000);
-	//pthread_cancel(*thread1);
-	//pthread_kill(*thread1, SIGUSR1);
+	pthread_cancel(*thread1);
+	
+	//pthread_kill(*thread1, SIGUSR1); // Si check exterieur
+	// car actuellement on check watchdog et bascule en primary au meme endroit
 }
 
 // autre thread check watchdog

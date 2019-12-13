@@ -1,6 +1,8 @@
 stable_memory.mem
 TestsUnitaires/*
 systeme
-Runs/resultats.txt
+Runs/*
+pid
+toto
 
 

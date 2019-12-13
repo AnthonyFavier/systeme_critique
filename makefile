@@ -7,6 +7,7 @@ all:
 	make smemory
 	make service
 	make systeme
+	make toto
 
 # CAPTEUR
 capteur:  Capteur_Buffer/capteur.h Capteur_Buffer/capteur.cpp Capteur_Buffer/testcapteur.cpp
@@ -26,4 +27,7 @@ service: Service/service.h Service/service.cpp Service/testservice.cpp Watchdog/
 
 systeme: Systeme/systeme.cpp  Service/service.h Service/service.cpp  Watchdog/watchdog.cpp Watchdog/watchdog.h SMemory/SMemory.h SMemory/SMemory.cpp Capteur_Buffer/capteur.h Capteur_Buffer/capteur.cpp Capteur_Buffer/circular_buffer.h Capteur_Buffer/circular_buffer.cpp
 	$(CC) Systeme/systeme.cpp Service/service.cpp  Watchdog/watchdog.cpp SMemory/SMemory.cpp Capteur_Buffer/capteur.cpp Capteur_Buffer/circular_buffer.cpp -o systeme
+
+toto: toto.cpp
+	$(CC) toto.cpp -o toto
 

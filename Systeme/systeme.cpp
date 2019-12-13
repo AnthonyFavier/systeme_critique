@@ -68,6 +68,12 @@ sig_t bye()
 ////////////////////////////////////////////////////////////////////
 main(int argc, char** argv)
 {
+	// ecriture du pid
+	ofstream fichier("pid");
+	pid_t pid=getpid();
+	fichier << pid;
+	fichier.close();
+
 	mutex* M=new mutex();
 	Watchdog* W = new Watchdog();
 	Capteur* C = new Capteur();

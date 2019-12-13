@@ -15,20 +15,15 @@ using namespace std;
 
 /* Definition de la procedure de traitement de requete  */
 
-std::mutex* M=new std::mutex();
-Watchdog* W = new Watchdog();
-Capteur* C = new Capteur();
-SMemory* SM = new SMemory();
-Circular_Buffer* B = new Circular_Buffer();
 
-Service* srv1 = new Service('P', W, C, SM, B, M, 0);
-Service* srv2 = new Service('B', W, C, SM, B, M, 1);
 
 pthread_attr_t *thread_attributes1;
 pthread_t *thread1;
 
-void * processeur1(void *args)
+void * processeur1(void* args)
 {
+	cout<<"Bonjour1"<<endl;
+	Service* srv1=(Service*)args;
 	while(true)
 	{
 		srv1->run();
@@ -36,8 +31,9 @@ void * processeur1(void *args)
 	}
 }
 
-void * processeur2(void *args)
+void * processeur2(void* args)
 {
+	Service* srv2=(Service*)args;
 	while(true)
 	{
         	srv2->run();
@@ -70,8 +66,19 @@ sig_t bye()
 }
 
 ////////////////////////////////////////////////////////////////////
-main()
+main(int argc, char** argv)
 {
+	mutex* M=new mutex();
+	Watchdog* W = new Watchdog();
+	Capteur* C = new Capteur();
+	SMemory* SM = new SMemory();
+	Circular_Buffer* B = new Circular_Buffer();
+
+	int argint=atoi(argv[1]);
+
+	Service* srv1 = new Service('P', W, C, SM, B, M, 0, argint);
+	Service* srv2 = new Service('B', W, C, SM, B, M, 1, argint);
+
 	pthread_attr_t *thread_attributes;
 	pthread_t *thread;
 
@@ -81,14 +88,14 @@ main()
 	thread_attributes1=(pthread_attr_t *)malloc(sizeof(pthread_attr_t));
 	thread1=(pthread_t *)malloc(sizeof(pthread_t));
 	pthread_attr_init(thread_attributes1);
-	if (pthread_create(thread1, thread_attributes1, processeur1,(void *) NULL) != 0)
+	if (pthread_create(thread1, thread_attributes1, processeur1,(void*) srv1) != 0)
 		perror ("Thread_Server-> Thread1 pb!");
 
 	// creation du thread Backup //
 	thread_attributes=(pthread_attr_t *)malloc(sizeof(pthread_attr_t));
 	thread=(pthread_t *)malloc(sizeof(pthread_t));
 	pthread_attr_init(thread_attributes);
-	if (pthread_create(thread, thread_attributes, processeur2,(void *) NULL) != 0)
+	if (pthread_create(thread, thread_attributes, processeur2,(void*) srv2) != 0)
 		perror ("Thread_Server-> Thread2 pb!");
 
 	// creation du thread Fault injection //

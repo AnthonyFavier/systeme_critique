@@ -2,7 +2,7 @@
 
 using namespace std;
 
-Service::Service(char spec_mode, Watchdog* spec_wd, Capteur* spec_cp, SMemory* spec_sm, Circular_Buffer* spec_buff, mutex* spec_mutex, int initial_mode)
+Service::Service(char spec_mode, Watchdog* spec_wd, Capteur* spec_cp, SMemory* spec_sm, Circular_Buffer* spec_buff, mutex* spec_mutex, int initial_mode, int spec_id)
 {
 	le_mutex_=spec_mutex;
 	mode_=spec_mode;
@@ -10,14 +10,22 @@ Service::Service(char spec_mode, Watchdog* spec_wd, Capteur* spec_cp, SMemory* s
 	CP_=spec_cp;
 	ME_=spec_sm;
 	pCBUF_=spec_buff;
+	id_=spec_id;
 	
 	timeout_=0;
 	ancien_watchdog_=-1;
 	initial_mode_=initial_mode;
-	filename_="Runs/resultats.txt";
 
+	std::string extension=to_string(id_);
+
+	filename_="Runs/resultatsid"+extension+".txt";
+
+
+	if (initial_mode_==0)
+	{
 	ofstream fichier(filename_);
         fichier.close();
+	}
 
 	delay_=500000; // µs
 

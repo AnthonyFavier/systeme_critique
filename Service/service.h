@@ -20,6 +20,7 @@ protected:
 	int ancien_watchdog_;
         char mode_;          // primary / backup
 	int initial_mode_;
+	int id_;
 	string filename_;
 	int delay_;
 
@@ -30,7 +31,7 @@ protected:
 
 
 public:
-        Service (char, Watchdog*, Capteur*, SMemory*, Circular_Buffer*, mutex*, int=0) ;
+        Service (char, Watchdog*, Capteur*, SMemory*, Circular_Buffer*, mutex*, int, int) ;
         void run () ;
 	float calcul(Circular_Buffer* buf);
 	void runPrimary();

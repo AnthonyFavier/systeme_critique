@@ -98,7 +98,10 @@ main()
 	if (pthread_create(thread, thread_attributes, fault_injection,(void *) NULL) != 0)
 		perror ("Thread_Server-> Thread FI pb!");
 
-	while (1) { } ;
+	while (1) 
+	{ 
+		usleep(100000);
+	} ;
 } 
 ///////////////////////////////////////////////////////////////////
 

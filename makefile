@@ -8,7 +8,8 @@ all:
 	make service
 	make systeme
 	make oracle
-	make toto
+	make injectAuto
+	make success
 
 # CAPTEUR
 capteur:  Capteur_Buffer/capteur.cpp Capteur_Buffer/testcapteur.cpp
@@ -32,6 +33,8 @@ systeme: Systeme/systeme.cpp  Service/service.cpp  Watchdog/watchdog.cpp SMemory
 oracle: GrandOracle/oracle.cpp
 	$(CC) GrandOracle/oracle.cpp -o oracle
 
-toto: toto.cpp
-	$(CC) toto.cpp -o toto
+injectAuto: injection_auto.cpp
+	$(CC) injection_auto.cpp -o injectionAuto
 
+success:
+	echo "\n [ Make successful ! ] \n"

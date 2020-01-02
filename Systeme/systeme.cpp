@@ -69,6 +69,14 @@ sig_t bye()
 ////////////////////////////////////////////////////////////////////
 main(int argc, char** argv)
 {
+	// verif arguments
+	if(argc!=2)
+	{
+		cout << "Erreur argument!!!" << endl;
+		return -1;
+	}
+
+
 	// ecriture du pid
 	ofstream fichier("pid");
 	pid_t pid=getpid();

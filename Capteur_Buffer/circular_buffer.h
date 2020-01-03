@@ -6,7 +6,7 @@
 class  Circular_Buffer 
 {
 private:
-	float buffer_[10];
+	float buffer_[TAILLE_BUFF];
 	int free_;
 public:
 	Circular_Buffer ();

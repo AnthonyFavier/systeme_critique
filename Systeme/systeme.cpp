@@ -15,8 +15,8 @@ using namespace std;
 
 /* Definition de la procedure de traitement de requete  */
 
-
-int damocles=1;
+// defini quand est ce que la faute par crash est injectée
+int damocles;
 
 pthread_attr_t *thread_attributes1;
 pthread_t *thread1;
@@ -76,7 +76,6 @@ main(int argc, char** argv)
 		return -1;
 	}
 
-
 	// ecriture du pid
 	ofstream fichier("pid");
 	pid_t pid=getpid();
@@ -88,7 +87,6 @@ main(int argc, char** argv)
 	damocles=rand()%18+1;
 	cout << "damo=" << damocles << endl;
 	
-
 	mutex* M=new mutex();
 	Watchdog* W = new Watchdog();
 	Capteur* C = new Capteur();

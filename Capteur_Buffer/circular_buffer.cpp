@@ -2,22 +2,18 @@
 #include "circular_buffer.h"
 using namespace std;
 
-// Attributes
-//	float buffer_[10]
-//	int free_;
-
 // Methods
 Circular_Buffer::Circular_Buffer ()
 {
 	int i;
-	for (i=0; i<10 ; i++) buffer_[i]=0.0;
+	for (i=0; i<TAILLE_BUFF ; i++) buffer_[i]=0.0;
 	free_=0;	
 }
 
 void Circular_Buffer::put (float x) // Adding a new float into the buffear
 {
 	buffer_[free_]=x;
-	free_=(free_+1)%10;
+	free_=(free_+1)%TAILLE_BUFF;
 }
 
 float* Circular_Buffer::get () // Returning the buffer
@@ -39,7 +35,7 @@ void Circular_Buffer::print()
 {
 	cout << "Buffer: ";
 	int i;
-	for (i=0; i<10; i++) cout << " "<< buffer_[i] ;
+	for (i=0; i<TAILLE_BUFF; i++) cout << " "<< buffer_[i] ;
 	cout << endl;
 }
 

@@ -8,15 +8,17 @@
 
 using namespace std;
 
-#define TAILLE_BUFF 10
-
 class SMemory
 {
 public:
+	// constructeur
 	SMemory();
+	// sauvegarde le buffer dans la mémoire stable
 	int save(Circular_Buffer* buff);
+	// recupère le buffer sauvegardé dans la mémoire
 	Circular_Buffer* recover();
 private:
+	// nom du fichier mémoire stable
 	string filename;
 };
 

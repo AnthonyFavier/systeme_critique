@@ -12,6 +12,8 @@ int SMemory::save(Circular_Buffer* buff)
 	if(fichier.bad()) return -1;
 	else
 	{
+		// on écrit les nombres qui compose le buffer
+		// ainsi que le numéro de la case courante (free)
 		float* tab=buff->get();
 		int free=buff->getFree();
 
@@ -37,12 +39,16 @@ Circular_Buffer* SMemory::recover()
 		string line;
 		float f;
 		int free;
+
+		// on lit les valeurs et on les ajoute au buffer
 		for(int i=0; i<10; i++)
 		{
 			getline(fichier, line);
 			f=atof(line.c_str());
 			buff->put(f);
 		}
+		// on récupère le numéro de la case courante
+		// pour initialiser correctement le buffer
 		getline(fichier, line);
 		free=atoi(line.c_str());
 		buff->setFree(free);

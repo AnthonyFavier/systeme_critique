@@ -2,7 +2,8 @@
 
 using namespace std;
 
-Service::Service(char spec_mode, Watchdog* spec_wd, Capteur* spec_cp, SMemory* spec_sm, Circular_Buffer* spec_buff, mutex* spec_mutex, int spec_id)
+Service::Service(char spec_mode, Watchdog* spec_wd, Capteur* spec_cp, SMemory* spec_sm, 
+		Circular_Buffer* spec_buff, mutex* spec_mutex, int spec_id)
 {
 	// Initialisation des attributs en fonction des paramètres 
 	le_mutex_=spec_mutex;
@@ -123,7 +124,7 @@ void Service::runBackup()
 {
 	timeout_++;
 
-	// On demande le verrou qui est libéré apres que le primary ai mis à jour le watchdog
+	// Demande le verrou qui est libéré apres que le primary ai mis à jour le watchdog
 	// Ou si on a trop attendu
 	// (la période du backup est 10x plus grande que le primary donc si en 11 périodes
 	// le watchdog ne bouge pas il y a un problème)

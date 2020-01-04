@@ -16,13 +16,13 @@ using namespace std;
 class Service 
 {
 protected:
-	int timeout_; 		// timeout en période au bout du quel on concidère le primaire comme mort
+	int timeout_; 		// timeout en période pour concidèrer le primaire dead
 	mutex* le_mutex_; 	// mutex pour synchroniser utilisation du watchdog
 	float valeur_capteur_;	// valeur lu du capteur
 	int ancien_watchdog_; 	// valeur précédente du watchdog
         char mode_;          	// primary / backup
 	char initial_mode_;  	// mode initial du service
-	int id_; 		// id du systeme (différencie les tests d'injection de fautes)
+	int id_; 		// id (différencie les tests d'injection de fautes)
 	string filename_; 	// nom du fichier où enregistrer les résultats
 	int delay_; 		// periode d'execution du service primairz
 
@@ -37,7 +37,7 @@ public:
 	void runPrimary(); 		    // appelé par run() en fonction de mode_
 	void runBackup(); 		    // appelé par run() en fonction de mode_
 	float calcul(Circular_Buffer* buf); // calcul la moyenne du buffer tournant
-	int saveRes(float v); 		    // sauvegarde le résultat calculé dans le fichier filename_
+	int saveRes(float v); 		    // sauvegarde calcul dans le fichier filename_
 	int getDelay(); 		    // accesseur pour la période
 	char getMode(); 		    // accesseur pour le mode
 };

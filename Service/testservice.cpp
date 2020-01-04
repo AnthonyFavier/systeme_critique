@@ -13,7 +13,7 @@ int main()
 	SMemory* SM = new SMemory();
 	Circular_Buffer* B = new Circular_Buffer();
 
-	Service* S = new Service('P', W, C, SM, B, M, 0, 1);
+	Service* S = new Service('P', W, C, SM, B, M, 1);
 
 	while(true)
 	{

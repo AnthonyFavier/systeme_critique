@@ -2,43 +2,37 @@
 
 using namespace std;
 
-Service::Service(char spec_mode, Watchdog* spec_wd, Capteur* spec_cp, SMemory* spec_sm, Circular_Buffer* spec_buff, mutex* spec_mutex, int initial_mode, int spec_id)
+Service::Service(char spec_mode, Watchdog* spec_wd, Capteur* spec_cp, SMemory* spec_sm, Circular_Buffer* spec_buff, mutex* spec_mutex, int spec_id)
 {
+	// Initialisation des attributs en fonction des paramètres 
 	le_mutex_=spec_mutex;
 	mode_=spec_mode;
 	WD_=spec_wd;
 	CP_=spec_cp;
 	ME_=spec_sm;
 	pCBUF_=spec_buff;
-	id_=spec_id;
-	
+
+	id_=spec_id;	
 	timeout_=0;
 	ancien_watchdog_=-1;
-	initial_mode_=initial_mode;
+	initial_mode_=spec_mode;
 
-	std::string extension=to_string(id_);
-
+	string extension=to_string(id_);
 	filename_="Runs/resultatsid"+extension+".txt";
 
-
-	if (initial_mode_==0)
+	// création ou reset du fichier de résultat
+	if (initial_mode_=='P')
 	{
-	ofstream fichier(filename_);
-        fichier.close();
+		ofstream fichier(filename_);
+	        fichier.close();
 	}
 
 	delay_=500000; // µs
-
-	signal(SIGUSR1, (sig_t)test);
-}
-
-sig_t test()
-{
-	cout << "salut" << endl;
 }
 
 void Service::run()
 {
+	// Machine à état (Primary - Backup)
 	switch(mode_)
 	{
 		case 'P':
@@ -47,6 +41,11 @@ void Service::run()
 		case 'B':
 			runBackup();
 			break;
+
+
+		default:
+			mode_='B';
+			break
 	}
 }
 
@@ -100,18 +99,19 @@ void Service::runPrimary()
 		if(v3==v1 || v3==v2)
 			v=v3;
 		else
-			probleme=true;
+			probleme=true; // 3 valeurs différentes, le vote echou
 	}
 
+	// Permet le silence sur defaillance
 	if(!probleme)
 	{
 		cout << "=>";
-		if(initial_mode_==0)
+		if(initial_mode_=='P')
 			cout << "Duplex";
 		else
 			cout << "Simplex";
 		cout<<"-moyenne arithmetique: "<<v<<endl;
-		saveRes(v);
+		saveRes(v); // sauvegarde du résultat dans le fichier
 	}
 
 	//5.Stockage infos capteur sur le disque (memoire stable)
@@ -123,7 +123,11 @@ void Service::runBackup()
 {
 	timeout_++;
 
-	if (le_mutex_->try_lock()||(timeout_==11))
+	// On demande le verrou qui est libéré apres que le primary ai mis à jour le watchdog
+	// Ou si on a trop attendu
+	// (la période du backup est 10x plus grande que le primary donc si en 11 périodes
+	// le watchdog ne bouge pas il y a un problème)
+	if (le_mutex_->try_lock()||(timeout_>=11))
 	{
 		//1.Lecture watchdog
 		int valeur_watchdog=WD_->read();
@@ -133,6 +137,8 @@ void Service::runBackup()
 		if (valeur_watchdog==ancien_watchdog_)
 		{
 			cout << "Recouvrement" << endl;
+			// On recupère le buffer stocké dans la mémoire
+			// Et on passe en mode primary
 			delete pCBUF_;
 			pCBUF_=ME_->recover();
 			mode_='P';
@@ -141,20 +147,21 @@ void Service::runBackup()
 		ancien_watchdog_=valeur_watchdog;
 		timeout_=0;
 	}
-	
 }
 
 int Service::saveRes(float v)
 {
+	// Ouverture le fichier en mode ajout
 	ofstream fichier(filename_, ios::app);
 
+	// Ecriture du fichier en verifiant si l'ouverture a fonctionnée
         if(fichier.bad()) return -1;
         else
-        {
                 fichier << v << endl;
-        }
 
+	// Fermeture du fichier
         fichier.close();
+
 	return 0;
 }
 

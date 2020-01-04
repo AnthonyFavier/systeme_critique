@@ -95,8 +95,8 @@ main(int argc, char** argv)
 
 	int argint=atoi(argv[1]);
 
-	Service* srv1 = new Service('P', W, C, SM, B, M, 0, argint);
-	Service* srv2 = new Service('B', W, C, SM, B, M, 1, argint);
+	Service* srv1 = new Service('P', W, C, SM, B, M, argint);
+	Service* srv2 = new Service('B', W, C, SM, B, M, argint);
 
 	pthread_attr_t *thread_attributes;
 	pthread_t *thread;

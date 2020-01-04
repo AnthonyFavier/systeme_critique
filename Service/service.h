@@ -2,6 +2,7 @@
 #include <pthread.h>
 #include <mutex>
 #include <signal.h>
+
 #include "../Watchdog/watchdog.h"
 #include "../Capteur_Buffer/capteur.h"
 #include "../SMemory/SMemory.h"
@@ -9,36 +10,33 @@
 
 using namespace std;
 
-sig_t test();
-
-class Service {
-
+class Service 
+{
 protected:
-	int timeout_;
-	mutex* le_mutex_;
-	float valeur_capteur_;
-	int ancien_watchdog_;
-        char mode_;          // primary / backup
-	int initial_mode_;
-	int id_;
-	string filename_;
-	int delay_;
+	int timeout_; 		// timeout en période au bout du quel on concidère le primaire comme mort
+	mutex* le_mutex_; 	// mutex pour synchroniser utilisation du watchdog
+	float valeur_capteur_;	// valeur lu du capteur
+	int ancien_watchdog_; 	// valeur précédente du watchdog
+        char mode_;          	// primary / backup
+	char initial_mode_;  	// mode initial du service
+	int id_; 		// id du systeme (différencie les tests d'injection de fautes)
+	string filename_; 	// nom du fichier où enregistrer les résultats
+	int delay_; 		// periode d'execution du service primaire
 
-        Watchdog* WD_;    // pointeur (reference) sur (adresse du) watchdog
-        Capteur* CP_;        // pointeur (reference) sur (adresse du) capteur
-        SMemory* ME_;    // pointeur (reference) sur (adresse de) memoire stable
-        Circular_Buffer* pCBUF_;    // pointeur sur un buffer circulaire
-
+        Watchdog* WD_;		// pointeur (reference) sur (adresse du) watchdog
+        Capteur* CP_;		// pointeur (reference) sur (adresse du) capteur
+        SMemory* ME_;		// pointeur (reference) sur (adresse de) memoire stable
+        Circular_Buffer* pCBUF_;// pointeur sur un buffer circulaire
 
 public:
-        Service (char, Watchdog*, Capteur*, SMemory*, Circular_Buffer*, mutex*, int, int) ;
-        void run () ;
-	float calcul(Circular_Buffer* buf);
-	void runPrimary();
-	void runBackup();
-	int saveRes(float v);
-	int getDelay();
-	char getMode();
+        Service (char, Watchdog*, Capteur*, SMemory*, Circular_Buffer*, mutex*, int) ; 
+        void run (); 			    // run global appelé par le processeur
+	void runPrimary(); 		    // appelé par run() en fonction de mode_
+	void runBackup(); 		    // appelé par run() en fonction de mode_
+	float calcul(Circular_Buffer* buf); // calcul la moyenne du buffer tournant
+	int saveRes(float v); 		    // sauvegarde le résultat calculé dans le fichier filename_
+	int getDelay(); 		    // accesseur pour la période
+	char getMode(); 		    // accesseur pour le mode
 };
 
 

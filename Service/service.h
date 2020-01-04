@@ -1,3 +1,6 @@
+#ifndef DEF_SERVICE
+#define DEF_SERVICE
+
 #include <iostream>
 #include <pthread.h>
 #include <mutex>
@@ -21,7 +24,7 @@ protected:
 	char initial_mode_;  	// mode initial du service
 	int id_; 		// id du systeme (différencie les tests d'injection de fautes)
 	string filename_; 	// nom du fichier où enregistrer les résultats
-	int delay_; 		// periode d'execution du service primaire
+	int delay_; 		// periode d'execution du service primairz
 
         Watchdog* WD_;		// pointeur (reference) sur (adresse du) watchdog
         Capteur* CP_;		// pointeur (reference) sur (adresse du) capteur
@@ -39,4 +42,4 @@ public:
 	char getMode(); 		    // accesseur pour le mode
 };
 
-
+#endif

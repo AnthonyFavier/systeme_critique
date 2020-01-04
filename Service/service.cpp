@@ -45,7 +45,7 @@ void Service::run()
 
 		default:
 			mode_='B';
-			break
+			break;
 	}
 }
 

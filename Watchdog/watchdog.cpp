@@ -7,6 +7,7 @@ Watchdog::Watchdog()
 
 void Watchdog::set()
 {
+	// incremente en verifiant si depasse valeur max
 	if(++compteur_>COMPT_MAX)
 		compteur_=0;
 }

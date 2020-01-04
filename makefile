@@ -1,4 +1,4 @@
-CC=g++ -pthread -lc
+CC=g++ -pthread -lc -Wall
 
 all:
 	make capteur

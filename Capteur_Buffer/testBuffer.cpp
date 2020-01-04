@@ -14,7 +14,7 @@ using namespace std;
 #include "circular_buffer.h"
 
 
-main() 
+int main() 
 {
 	Circular_Buffer CBUF;
 
@@ -24,4 +24,6 @@ main()
 	float* T;
 	T=CBUF.get();
 	for (i=0; i<10; i++) cout << *T++ << endl;
+
+	return 0;
 }
